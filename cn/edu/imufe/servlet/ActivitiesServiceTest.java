@@ -111,6 +111,7 @@ public class ActivitiesServiceTest {
 			else 
 				ReturnMessage="failure sql";
 			System.out.println(ReturnMessage);
+			System.out.println("lilei");
 		}
 		
 	}
