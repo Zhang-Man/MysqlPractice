@@ -30,8 +30,9 @@ public class ActivitiesServiceTest {
 	public void testsql() {
 		Connection connection = DbUtil.getInstance().getConnection();
 		try {
-			PreparedStatement pstat = connection.prepareStatement("select Sno sn,Sname na,Ssex ss,Sage sa,Sdept sd from student");
+			PreparedStatement pstat = connection.prepareStatement("select Sname as namec,Sage as age from student where Sage >=20");
 			ResultSet rs = pstat.executeQuery();
+			System.out.println(rs.getRow());
 			ResultSetUtil rsu = new ResultSetUtil(rs);
 
 			System.out.println("行数:" + rsu.getRowSize());
@@ -57,6 +58,7 @@ public class ActivitiesServiceTest {
 	/**
 	 * 如果出现错误，那么就不用进行比较，直接返回（打印）错误的原因 如果没有出现错误，那么才进行比较
 	 */
+	@Test
 	public void testentity() {
 		// 判断是否是语法错误抛出去的原因
 		boolean flag = false;
@@ -67,7 +69,7 @@ public class ActivitiesServiceTest {
 		System.out.println("开始");
 		// 答案结果
 		try {
-			PreparedStatement pstat = connection.prepareStatement("select * from student");
+			PreparedStatement pstat = connection.prepareStatement("select Sname as name,Sage as age from student where Sage >=20");
 			ResultSet rs = pstat.executeQuery();
 			ResultSetUtil rsu = new ResultSetUtil(rs);
 			System.out.println("获取第二个(答案结果)table");
@@ -84,7 +86,7 @@ public class ActivitiesServiceTest {
 		// 用户结果
 		System.out.println("用户结果查询开始");
 		try {
-			PreparedStatement pstat = connection.prepareStatement("select Sno sn,Sname na,Ssex ss,Sage sa,Sdept sd from student");
+			PreparedStatement pstat = connection.prepareStatement("select Sname as name,Sage as age from student where Sage <20");
 			ResultSet rs = pstat.executeQuery();
 			ResultSetUtil rsu = new ResultSetUtil(rs);
 			table.setRows(rsu.getRowSize());// 获取总行数
@@ -106,12 +108,14 @@ public class ActivitiesServiceTest {
 			System.err.println(ReturnMessage);
 		}
 		if (flag == true) {
-			if (table.getRows().equals(table2.getRows()))
-				ReturnMessage="success sql";
-			else 
-				ReturnMessage="failure sql";
+			if (table.equals(table2))
+				ReturnMessage="Same sql";
+			else {
+				
+			
+				ReturnMessage="different sql";
 			System.out.println(ReturnMessage);
-			System.out.println("lilei");
+			}
 		}
 		
 	}
