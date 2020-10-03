@@ -1,4 +1,5 @@
 package edu.imufe.utils;
+
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -20,45 +21,22 @@ public class ResultSetUtil {
     private long firstColumnSum = 0;
     private long firstRowSum = 0;
     private long allTableSum = 0;
-    private Integer columnSize=0;
-    private Integer rowSum=0;
+    private Integer columnSize = 0;
+    private Integer rowSum = 0;
 
     public ResultSetUtil(ResultSet resultSet) {
         this.resultSet = resultSet;
         try {
             ResultSetMetaData rsmd = this.resultSet.getMetaData();
             columnSize = rsmd.getColumnCount();
-
             for (int i = 1; i <= columnSize; i++) {
                 columnTypeSet.add(rsmd.getColumnType(i));
                 columnNameSet.add(rsmd.getColumnName(i));
-
             }
-
-
         } catch (SQLException throwable) {
             throwable.printStackTrace();
         }
     }
-
-
-    public long getFirstColumnSum() {
-        return firstColumnSum;
-    }
-
-    public long getFirstRowSum() {
-        return firstRowSum;
-    }
-
-
-    public long getAllTableSum() {
-        return allTableSum;
-    }
-
-    public int getColumnSize() {
-        return columnSize;
-    }
-
 
     public Integer getRowSize() {
         rowSum = 0;
@@ -71,7 +49,7 @@ public class ResultSetUtil {
                         firstColumnSum += getAscii(resultSet.getObject(columnNameSet.get(0)));
                         firstColumnSet.add(getAscii(resultSet.getObject(columnNameSet.get(0))));
                     }
-                    if (rowSum==0){
+                    if (rowSum == 0) {
                         firstRowSum += getAscii(resultSet.getObject(columnNameSet.get(i)));
                         firstRowSet.add(getAscii(resultSet.getObject(columnNameSet.get(i))));
                     }
@@ -89,15 +67,52 @@ public class ResultSetUtil {
         return rowSum;
     }
 
+
+    public long getFirstColumnSum() {
+        if (firstColumnSum == 0) {
+            getRowSize();
+        }
+        return firstColumnSum;
+    }
+
+    public long getFirstRowSum() {
+        if (firstRowSum == 0) {
+            getRowSize();
+        }
+        return firstRowSum;
+    }
+
+
+    public long getAllTableSum() {
+        if (allTableSum == 0) {
+            getRowSize();
+        }
+        return allTableSum;
+    }
+
+    public int getColumnSize() {
+        return columnSize;
+    }
+
+
     public ArrayList<Long> getFirstRowSet() {
+    /*    if (firstRowSet.size()==0){
+            getRowSize();
+        }*/
         return firstRowSet;
     }
 
     public ArrayList<Long> getFirstColumnSet() {
+    /*    if (firstColumnSet.size()==0){
+            getRowSize();
+        }*/
         return firstColumnSet;
     }
 
     public ArrayList<Long> getRowSet() {
+    /*    if (rowSet.size()==0){
+            getRowSize();
+        }*/
         return rowSet;
     }
 
